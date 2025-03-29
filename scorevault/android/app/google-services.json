@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "721878295946",
+    "project_id": "scorevault-199e9",
+    "storage_bucket": "scorevault-199e9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:721878295946:android:855de1fb7960f1f54dd473",
+        "android_client_info": {
+          "package_name": "com.app.scorevault"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCpuGZqdnUSI0_x9PW8YVRJkj5P10R4K8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

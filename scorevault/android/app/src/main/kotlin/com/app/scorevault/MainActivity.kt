@@ -1,4 +1,4 @@
-package com.example.scorevault
+package com.app.scorevault
 
 import io.flutter.embedding.android.FlutterActivity
 
