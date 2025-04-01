@@ -30,7 +30,7 @@ In questa iterazione, si procede con la creazione del progetto Flutter definendo
 #### UC1.1: SignIn
 
 **Descrizione**:  
-Quando l'utente avvia l'applicazione, viene presentata una schermata di benvenuto con due opzioni prominenti: "Accedi" e "Registrati". Toccando il pulsante "Accedi", l'utente viene indirizzato a una schermata di login con un'interfaccia pulita e minimalista. Questa schermata contiene due campi di input chiaramente etichettati: uno per l'email (con tastiera email ottimizzata) e uno per la password (con caratteri nascosti), insieme a un pulsante "Accedi" nella parte inferiore. Nella parte superiore della schermata è presente il logo dell'app ScoreVault.
+Quando l'utente avvia l'applicazione, viene presentata una schermata di benvenuto con due opzioni prominenti: "Accedi" e "Registrati". Toccando il pulsante "Accedi", l'utente viene indirizzato a una schermata di login. Questa schermata contiene due campi di input chiaramente etichettati: uno per l'email e uno per la password (con caratteri nascosti), insieme a un pulsante "Accedi" nella parte inferiore. Nella parte superiore della schermata è presente il logo dell'app ScoreVault.
 
 **Attori**:  
 - Utente
@@ -40,9 +40,6 @@ Quando l'utente avvia l'applicazione, viene presentata una schermata di benvenut
 - L'utente tocca il pulsante "Accedi" sulla schermata di benvenuto
 - L'utente tenta di accedere a una sezione protetta dell'app mentre non è autenticato, in tal caso viene automaticamente reindirizzato alla schermata di login
 - L'utente avvia l'app dopo aver effettuato il logout nell'ultima sessione
-
-**Post-condizione**:  
-Dopo un accesso riuscito, l'utente visualizza una breve animazione di caricamento circolare mentre i suoi dati vengono recuperati. La schermata principale dell'app si apre.
 
 **Procedimento**:  
 1. L'utente inserisce il proprio indirizzo email nel primo campo. Durante la digitazione, l'app verifica in tempo reale il formato dell'email, mostrando un messaggio di errore se il formato non è valido.
@@ -66,16 +63,15 @@ Dalla schermata di benvenuto, l'utente può toccare il pulsante "Registrati" per
 - L'utente seleziona "Non hai un account? Registrati ora" nella schermata di login
 
 **Post-condizione**:  
-Dopo una corretta registrazione dell'account, l'accesso all'applicazione avviene in automatico. l'utente visualizza una breve animazione di caricamento circolare mentre i suoi dati vengono creati. La schermata principale dell'app si apre.
+Dopo una corretta registrazione dell'account, l'accesso all'applicazione avviene in automatico. La schermata principale dell'app si apre.
 
 **Procedimento**:  
 1. L'utente inserisce l'email desiderata nel primo campo. 
 2. L'utente crea e conferma la password nei campi successivi.
 3. L'utente inserisce un Username
-4. Opzionalmente, l'utente può toccare il cerchio con l'icona della fotocamera per caricare una foto profilo, sia dalla galleria che scattando una nuova foto.
-5. L'utente tocca il pulsante "Completa registrazione" nella parte inferiore della schermata.
-6. L'app mostra un indicatore di caricamento mentre crea l'account in Firebase Auth, carica l'eventuale immagine profilo e configura il documento utente in Firestore.
-7. Una volta completato il processo,avviene l'autenticazione automatica e l'app mostra la schermata home
+4. L'utente tocca il pulsante "Completa registrazione" nella parte inferiore della schermata.
+5. L'app mostra un indicatore di caricamento mentre crea l'account in Firebase Auth, configura il documento utente in Firestore.
+6. Una volta completato il processo,avviene l'autenticazione automatica e l'app mostra la schermata home
 
 #### UC1.3: SignOut
 
