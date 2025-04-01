@@ -31,3 +31,7 @@ flutter:
   assets:
     - assets/logo.png
     - assets/user_info.png
+    - assets/catan.jpg
+    - assets/7wonders.jpg
+    - assets/burraco.jpg
+    - assets/lostcities.jpg

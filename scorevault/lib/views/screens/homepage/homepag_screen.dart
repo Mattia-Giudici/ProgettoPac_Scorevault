@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
-import 'package:scorevault/views/screens/homepage/tabs/tab_account.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_games.dart';
-import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
+import 'package:scorevault/views/screens/homepage/tabs/tab_account.dart';
+import 'package:scorevault/views/widgets/headers/header.dart';
 
-class HomepagScreen extends StatefulWidget {
-  const HomepagScreen({super.key});
+class HomePageScreen extends StatefulWidget {
+  const HomePageScreen({super.key});
 
   @override
-  State<HomepagScreen> createState() => _HomepagScreenState();
+  State<HomePageScreen> createState() => _HomepagScreenState();
 }
 
-class _HomepagScreenState extends State<HomepagScreen> {
+class _HomepagScreenState extends State<HomePageScreen> {
   late final AuthProvider _authProvider;
   int _selectedIndex = 0;
 
-  List<Widget> _listaTabs = [TabGames(), TabAccount()];
+  final List<Widget> _listaTabs = [TabGames(), TabAccount()];
 
   @override
   void initState() {
@@ -28,10 +27,15 @@ class _HomepagScreenState extends State<HomepagScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      body: _listaTabs[_selectedIndex],
+      body:Column(
+        children: [
+           const HeaderWidget(),
+          Expanded(
+            child: _listaTabs[_selectedIndex],
+          ),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        
         onTap: (value) {
           setState(() {
             _selectedIndex = value;
@@ -39,14 +43,10 @@ class _HomepagScreenState extends State<HomepagScreen> {
         },
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
-        unselectedLabelStyle: SvBoldText.getTextStyle(size: 12, textColor: Theme.of(context).colorScheme.onSurface),
-                selectedLabelStyle: SvBoldText.getTextStyle(size: 12, textColor: Theme.of(context).colorScheme.primary),
-
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.gamepad_rounded),
             label: 'Giochi',
-        
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2_rounded),
