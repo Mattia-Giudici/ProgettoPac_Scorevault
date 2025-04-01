@@ -6,6 +6,7 @@ import 'package:scorevault/views/screens/auth/forgot_password.dart';
 import 'package:scorevault/views/screens/auth/login_screen.dart';
 import 'package:scorevault/views/screens/auth/signup_screen.dart';
 import 'package:scorevault/views/screens/auth/welcome_screen.dart';
+import 'package:scorevault/views/screens/generic_games/game_screen.dart';
 import 'package:scorevault/views/screens/homepage/homepag_screen.dart';
 import 'package:scorevault/views/screens/homepage/newfriend_screen.dart';
 
@@ -50,15 +51,25 @@ final router = GoRouter(
       path: '/home',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: const HomepagScreen(),
+        child: const HomePageScreen(),
       ),
     ),
-     GoRoute(
+    GoRoute(
       path: '/new-friend',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
         child: const NewfriendScreen(),
       ),
+    ),
+    GoRoute(
+      path: '/game/:name',
+      pageBuilder: (context, state) {
+        final gameName = state.pathParameters['name'] ?? 'Gioco';
+        return MaterialPage(
+          key: state.pageKey,
+          child: GameScreen(gameName: gameName),
+        );
+      },
     ),
   ],
   redirect: (context, state) {
@@ -71,14 +82,6 @@ final router = GoRouter(
     
     return null;
   },
-  /*
-  errorPageBuilder: (context, state) => MaterialPage(
-    key: state.pageKey,
-    child: ErrorScreen(error: state.error),
-  ),
-  */
 );
 
 final _authRoutes = ['/welcome', '/login', '/signup', '/forgot-password'];
-
-
