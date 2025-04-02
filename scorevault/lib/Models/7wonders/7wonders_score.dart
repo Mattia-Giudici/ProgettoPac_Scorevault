@@ -34,4 +34,5 @@ class Score7Wonders {
       'total': totale,
     };
   }
+  //TODO aggiungiamo qui la formula per la somma?? 
 }

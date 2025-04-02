@@ -1,4 +1,4 @@
-//TODO classe tutta da ampliare e completare
+//TODO classe tutta da ampliare e completare, solo essenziale per ora
 class Giocatore {
   final String uid;
   final String email;

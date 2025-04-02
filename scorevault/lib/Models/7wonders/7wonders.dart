@@ -1,13 +1,16 @@
 import 'package:scorevault/Models/7wonders/7wonders_score.dart';
+import 'package:scorevault/Models/giocatore.dart';
 
 class SevenWonders{
   final String gameId;
   final DateTime date;
+  final List<Giocatore> giocatori;
   final Map<String, Score7Wonders> scores; 
 
   SevenWonders({
     required this.gameId,
     required this.date,
+    required this.giocatori,
     required this.scores,
   });
 
