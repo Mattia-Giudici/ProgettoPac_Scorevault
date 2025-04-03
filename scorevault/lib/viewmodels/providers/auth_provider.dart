@@ -55,7 +55,11 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
       await FirebaseFirestore.instance
           .collection("utenti")
           .doc(user.user!.uid)
-          .set({'email': user.user!.email, 'username': username, 'friends': []});
+          .set({
+            'email': user.user!.email,
+            'username': username,
+            'friends': [],
+          });
     }
   }
 
@@ -72,5 +76,14 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
   @override
   Future<void> signout() async {
     _firebaseAuth.signOut();
+  }
+
+  @override
+  Future<void> forgotPassword(String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw Exception(e.code);
+    }
   }
 }

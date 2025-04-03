@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
@@ -103,7 +104,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(height: 16),
                 SvStandardButton(
                   text: "Invia mail di recupero",
-                  function: () {},
+                  function: () {
+                    _performForgotPassword(context);
+                  },
                   color: Theme.of(context).colorScheme.primary,
                   textColor: AppColors.lightSurface,
                 ),
@@ -115,6 +118,47 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       ),
     );
   }
+
+  void _showProgressIndicator(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Impedisce la chiusura accidentale
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Future <void> _performForgotPassword(BuildContext context) async{
+_showProgressIndicator(context);
+    if (_formKey.currentState!.validate()) {
+      try {
+        await _authProvider.forgotPassword(_mailcontroller.text);
+        Navigator.pop(context); // Chiude il loader quando la login ha successo
+        context.go('/welcome');
+         ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Email di recupro inviata"),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      } catch (e) {
+        Navigator.pop(context); // Chiude il loader prima di mostrare l'errore
+        FocusScope.of(context).unfocus(); // Rimuove il focus dai campi di input
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } else {
+      Navigator.pop(context); // Chiude il loader se la validazione fallisce
+      FocusScope.of(
+        context,
+      ).unfocus(); // Rimuove il focus per evitare la tastiera
+    }
+  }
+
+
 }
 /*
  
