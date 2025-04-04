@@ -235,3 +235,50 @@ Il modulo di gestione partite è accessibile attraverso l'icona "Partite" (rappr
 
 **Post-condizione**:  
 L'utente visualizza una lista completa delle proprie partite, organizzata cronologicamente e con indicatori visivi chiari dello stato di ciascuna (completata, in corso, vinta, persa). La navigazione è intuitiva grazie ai tab superiori che permettono di passare facilmente tra le
+
+
+*Bozze*
+
++---------------------+       +---------------------+
+|     AuthServices    |       |     AuthException   |
++---------------------+       +---------------------+
+| + signin()          |       | - code: String      |
+| + signup()          |       | - message: String?  |
+| + signout()         |       +---------------------+
+| + deleteUser()      |               ^
+| + forgotPassword()  |               |
+| + isLogged()        |               |
+| + updateUser()      |       +---------------------+
++---------------------+       |    AuthProvider     |
+       ^                      +---------------------+
+       |                      | - _firebaseAuth     |
+       |                      | - _firestore        |
+       |                      | - _cachedUser       |
++---------------------+       +---------------------+
+|   ChangeNotifier    |       | + currentFirebaseUser|
++---------------------+       | + currentUser        |
+       ^                      | + signin()           |
+       |                      | + signup()           |
+       |                      | + signout()          |
+       |                      | + deleteUser()       |
+       |                      | + forgotPassword()   |
+       |                      | + isLogged()         |
+       |                      | + updateUser()       |
+       |                      | - _initializeUser()  |
+       |                      | - _fetchAndCacheUser()|
+       |                      | - _createUserData()  |
+       |                      +---------------------+
+       |
++---------------------+
+|    ModelUser        |
++---------------------+
+| - email: String     |
+| - username: String  |
+| - friends: List     |
+| - pendingFriends: List |
++---------------------+
+| + toJson()          |
+| + fromJson()        |
+| + copyWith()        |
++---------------------+
+
