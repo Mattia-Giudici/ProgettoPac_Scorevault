@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_games.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_account.dart';
-import 'package:scorevault/views/widgets/headers/header.dart';
+import 'package:scorevault/views/widgets/headers/header_home.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});

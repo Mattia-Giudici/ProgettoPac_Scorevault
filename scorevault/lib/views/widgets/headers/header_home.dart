@@ -1,34 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class HeaderWidget extends StatelessWidget {
   const HeaderWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    return Container(
+    color: Theme.of(context).colorScheme.primary,
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          const Expanded(
+          Expanded(
             flex: 2,
             child: Text(
               "ELO: 1500",
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                color: Colors.black,
               ),
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.person, size: 32),
+            icon: Icon(Icons.person, size: 32, color: Colors.black,),
             onPressed: () {
-              // Azione per aprire le info utente
+              //TODO: navigazione utente
             },
           ),
         ],
       ),
+    ),
     );
   }
 }

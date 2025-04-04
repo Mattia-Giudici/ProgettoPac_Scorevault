@@ -7,7 +7,8 @@ class AppTheme {
     colorScheme: const ColorScheme.light(
       surface: AppColors.lightSurface,
       primary: AppColors.lightPrimary,
-      primaryContainer: AppColors.lightGrey
+      primaryContainer: AppColors.lightGrey,
+
     ),
   );
 
@@ -16,7 +17,7 @@ class AppTheme {
     colorScheme: const ColorScheme.dark(
       surface: AppColors.darkSurface,
       primary: AppColors.darkPrimary,
-      primaryContainer: AppColors.darkGrey
+      primaryContainer: AppColors.darkGrey,
     ),
     // Aggiungi altre personalizzazioni per dark mode
   );
