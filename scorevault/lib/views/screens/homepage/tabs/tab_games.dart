@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scorevault/views/widgets/cards/game_card.dart';
+//TODO Categorie e filtri  UC2
+//TODO giochi preferiti 
 
 class TabGames extends StatefulWidget {
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
+import 'package:scorevault/views/screens/homepage/tabs/tab_crono.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_games.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_account.dart';
 import 'package:scorevault/views/widgets/headers/header_home.dart';
@@ -16,7 +17,7 @@ class _HomepagScreenState extends State<HomePageScreen> {
   late final AuthProvider _authProvider;
   int _selectedIndex = 0;
 
-  final List<Widget> _listaTabs = [TabGames(), TabAccount()];
+  final List<Widget> _listaTabs = [TabGames(), TabCrono(),TabAccount()];
 
   @override
   void initState() {
@@ -49,9 +50,14 @@ class _HomepagScreenState extends State<HomePageScreen> {
             label: 'Giochi',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.history), 
+            label: 'Cronologia'),
+
+          BottomNavigationBarItem(
             icon: Icon(Icons.person_2_rounded),
             label: 'Account',
           ),
+          
         ],
       ),
     );
