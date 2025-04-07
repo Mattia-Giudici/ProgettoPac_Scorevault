@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
 import 'package:scorevault/views/screens/auth/welcome_screen.dart';
+import 'package:scorevault/views/screens/friends/notification_newfriend_screen.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
 import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
 
@@ -30,7 +31,9 @@ class TabAccount extends StatelessWidget {
         actionsPadding: EdgeInsets.only(right: 8),
         actions: [
           IconButton.filled(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationNewfriendScreen()));
+            },
             icon: Icon(Icons.notifications_rounded),
           ),
         ],
@@ -60,42 +63,69 @@ class TabAccount extends StatelessWidget {
                 text:
                     context
                         .read<AuthProvider>()
-                        .currentFirebaseUser!
-                        .displayName!,
+                        .currentUser!.displayName! ?? "",
                 size: 24,
                 textColor: Theme.of(context).colorScheme.onSurface,
               ),
               SvStandardText(
-                text: context.read<AuthProvider>().currentFirebaseUser!.email!,
+                text: context.read<AuthProvider>().currentUser!.email!,
                 size: 12,
                 textColor: Theme.of(context).colorScheme.onSurface,
               ),
 
               SizedBox(height: 64),
-              _buildDivider(context),
 
+              // Modifica profilo
+              _buildDivider(context),
+              _buildListTile(
+                context,
+                Icons.person_pin_rounded,
+                "Modifica profilo",
+                () {},
+                null,
+                Theme.of(context).colorScheme.onSurface.withAlpha(100),
+              ),
+              // Statistiche partite
+              _buildDivider(context),
+              _buildListTile(
+                context,
+                Icons.bar_chart_rounded,
+                "Statistiche partite",
+                () {},
+                null,
+                Theme.of(context).colorScheme.onSurface.withAlpha(100),
+              ),
+              // amici
+              _buildDivider(context),
               _buildListTile(
                 context,
                 Icons.people_rounded,
                 "Amici",
-                () {
-                
-                },
+                () {},
                 SvBoldText(
-                  text: "3",
+                  text: "0",
                   size: 18,
                   textColor: Theme.of(context).colorScheme.onSurface,
                 ),
+                Theme.of(context).colorScheme.onSurface.withAlpha(100),
               ),
-              _buildDivider(context),
 
-              _buildListTile(context, Icons.logout_rounded, "Esci", () {
-                context.read<AuthProvider>().signout();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => WelcomeScreen()),
-                );
-              }, null),
+              // logout
+              _buildDivider(context),
+              _buildListTile(
+                context,
+                Icons.logout_rounded,
+                "Esci",
+                () {
+                  context.read<AuthProvider>().signout();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                  );
+                },
+                null,
+                AppColors.red,
+              ),
             ],
           ),
         ),
@@ -105,7 +135,7 @@ class TabAccount extends StatelessWidget {
 
   Widget _buildDivider(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Divider(
         color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
         height: 1,
@@ -119,12 +149,13 @@ class TabAccount extends StatelessWidget {
     String text,
     void Function() onTap,
     Widget? trailing,
+    Color iconColor,
   ) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 24),
+      contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
       trailing: trailing,
       leading: CircleAvatar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: iconColor,
         child: Icon(icon, color: AppColors.lightSurface),
       ),
       title: SvBoldText(

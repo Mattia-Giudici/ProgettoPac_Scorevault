@@ -13,5 +13,6 @@ abstract class AppColors {
 
   // common
   static const red = Color.fromARGB(213, 231, 64, 64);
+  static const green = Color.fromARGB(211, 64, 231, 103);
 
 }

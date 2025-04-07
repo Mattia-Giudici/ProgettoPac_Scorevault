@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:scorevault/utils/colors.dart';
-import 'package:scorevault/viewmodels/providers/auth_provider.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_crono.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_games.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_account.dart';
@@ -14,18 +12,11 @@ class HomePageScreen extends StatefulWidget {
 }
 
 class _HomepagScreenState extends State<HomePageScreen> {
-  late final AuthProvider _authProvider;
   int _selectedIndex = 0;
 
   final List<Widget> _listaTabs = [TabGames(), TabCrono(),TabAccount()];
 
-  @override
-  void initState() {
-    _authProvider = Provider.of<AuthProvider>(context, listen: false);
-    _authProvider.initializeUser();
-    super.initState();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
