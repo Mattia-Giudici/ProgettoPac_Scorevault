@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
+import 'package:scorevault/views/screens/auth/login_screen.dart';
+import 'package:scorevault/views/screens/homepage/homepag_screen.dart';
 import 'package:scorevault/views/widgets/buttons/sv_standard_button.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
 import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
@@ -48,11 +49,14 @@ class _SignupScreenState extends State<SignupScreen> {
         title: SvBoldText(
           text: "Crea un account",
           size: 24,
-          textColor: Theme.of(context).colorScheme.onSurface,
+          textColor: AppColors.lightSurface,
         ),
-         leading: IconButton(onPressed: (){
-          context.go('/welcome');
-        }, icon: Icon(Icons.arrow_back_ios_new_rounded)),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios_new_rounded),
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -97,13 +101,14 @@ class _SignupScreenState extends State<SignupScreen> {
                           textColor: Theme.of(context).colorScheme.onSurface,
                         ),
                         filled: true,
-                        fillColor: Theme.of(context).colorScheme.primaryContainer,
+                        fillColor:
+                            Theme.of(context).colorScheme.primaryContainer,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Inserisci nome utente';
                         }
-                       
+
                         return null;
                       },
                     ),
@@ -139,7 +144,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           textColor: Theme.of(context).colorScheme.onSurface,
                         ),
                         filled: true,
-                        fillColor: Theme.of(context).colorScheme.primaryContainer,
+                        fillColor:
+                            Theme.of(context).colorScheme.primaryContainer,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -182,7 +188,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           textColor: Theme.of(context).colorScheme.onSurface,
                         ),
                         filled: true,
-                        fillColor: Theme.of(context).colorScheme.primaryContainer,
+                        fillColor:
+                            Theme.of(context).colorScheme.primaryContainer,
                         suffixIcon: Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: IconButton(
@@ -210,7 +217,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                     const SizedBox(height: 8),
-                
+
                     TextFormField(
                       autofocus: false,
                       controller: _confirmpasswordcontroller,
@@ -230,7 +237,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           textColor: Theme.of(context).colorScheme.onSurface,
                         ),
                         filled: true,
-                        fillColor: Theme.of(context).colorScheme.primaryContainer,
+                        fillColor:
+                            Theme.of(context).colorScheme.primaryContainer,
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -243,7 +251,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                
+
                     SvStandardButton(
                       text: "Registra account",
                       function: () {
@@ -262,7 +270,12 @@ class _SignupScreenState extends State<SignupScreen> {
                     SvStandardButton(
                       text: "Accedi",
                       function: () {
-                        context.push('/login');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
                       },
                       color: Theme.of(context).colorScheme.primaryContainer,
                       textColor: Theme.of(context).colorScheme.primary,
@@ -295,7 +308,10 @@ class _SignupScreenState extends State<SignupScreen> {
           _usernamecontroller.text,
         );
         Navigator.pop(context); // Chiude il loader quando la login ha successo
-        context.go('/home');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePageScreen()),
+        );
       } catch (e) {
         Navigator.pop(context); // Chiude il loader prima di mostrare l'errore
         FocusScope.of(context).unfocus(); // Rimuove il focus dai campi di input

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_crono.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_games.dart';
 import 'package:scorevault/views/screens/homepage/tabs/tab_account.dart';
-import 'package:scorevault/views/widgets/headers/header_home.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -22,6 +22,7 @@ class _HomepagScreenState extends State<HomePageScreen> {
   @override
   void initState() {
     _authProvider = Provider.of<AuthProvider>(context, listen: false);
+    _authProvider.initializeUser();
     super.initState();
   }
 
@@ -30,7 +31,7 @@ class _HomepagScreenState extends State<HomePageScreen> {
     return Scaffold(
       body:Column(
         children: [
-           const HeaderWidget(),
+          // const HeaderWidget(),
           Expanded(
             child: _listaTabs[_selectedIndex],
           ),
@@ -44,6 +45,7 @@ class _HomepagScreenState extends State<HomePageScreen> {
         },
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
+        selectedItemColor: AppColors.lightPrimary,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.gamepad_rounded),

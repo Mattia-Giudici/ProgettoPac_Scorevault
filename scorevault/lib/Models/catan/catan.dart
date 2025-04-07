@@ -1,10 +1,10 @@
 import 'package:scorevault/Models/catan/catan_score.dart';
-import 'package:scorevault/Models/giocatore.dart';
+import 'package:scorevault/Models/model_user.dart';
 
 class Catan {
   final String idPartita;
   final DateTime data;
-  final List<Giocatore> giocatori;
+  final List<ModelUser> giocatori;
   final Map<String, ScoreCatan> punteggi;
 
   Catan({

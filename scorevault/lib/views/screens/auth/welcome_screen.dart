@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:scorevault/utils/colors.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:scorevault/views/screens/auth/login_screen.dart';
+import 'package:scorevault/views/screens/auth/signup_screen.dart';
 import 'package:scorevault/views/widgets/buttons/sv_standard_button.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
 import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
@@ -37,27 +38,35 @@ class WelcomeScreen extends StatelessWidget {
                 size: 32,
                 textColor: Theme.of(context).colorScheme.onSurface,
               ),
-              SvStandardText(
-                text:
-                    "Accedi all'applicazione con le tue credenziali, oppure registra un nuovo account",
-                size: 12,
-                textColor: Theme.of(context).colorScheme.onSurface,
+              Text(
+                textAlign: TextAlign.center,
+                "Accedi all'applicazione con le tue credenziali, oppure registra un nuovo account",
+                style: GoogleFonts.sora(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
               ),
 
               Spacer(),
               SvStandardButton(
                 text: "Accedi",
                 function: () {
-                  context.push('/login');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
                 },
                 color: Theme.of(context).colorScheme.primary,
-                textColor: AppColors.lightSurface,
+                textColor: Theme.of(context).colorScheme.surface,
               ),
               SizedBox(height: 16),
               SvStandardButton(
                 text: "Registrati",
                 function: () {
-                  context.push('/signup');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignupScreen()),
+                  );
                 },
                 color: Theme.of(context).colorScheme.primaryContainer,
                 textColor: Theme.of(context).colorScheme.primary,

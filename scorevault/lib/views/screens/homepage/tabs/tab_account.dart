@@ -1,91 +1,140 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
+import 'package:scorevault/views/screens/auth/welcome_screen.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
+import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
 
+/**
+ *   authProvider.signout();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                );
+ */
 class TabAccount extends StatelessWidget {
-  TabAccount({super.key});
+  const TabAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
-    AuthProvider _authProvider = Provider.of<AuthProvider>(
-      context,
-      listen: false,
-    );
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         automaticallyImplyLeading: false,
         title: SvBoldText(
           text: "Account",
           size: 24,
-          textColor: Theme.of(context).colorScheme.onSurface,
+          textColor: AppColors.lightSurface,
         ),
+        actionsPadding: EdgeInsets.only(right: 8),
         actions: [
-          CircleAvatar(
-            backgroundColor: AppColors.red,
-            child: IconButton(
-              onPressed: () {
-                _authProvider.signout();
-                context.pushReplacement('/welcome');
-              },
-              icon: Icon(Icons.logout_rounded, color: AppColors.lightSurface,),
-            ),
+          IconButton.filled(
+            onPressed: () {},
+            icon: Icon(Icons.notifications_rounded),
           ),
-          SizedBox(width: 16,)
         ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(width: 16),
-                  CircleAvatar(
-                    radius: 32,
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    child: Icon(Icons.person_2_rounded, size: 48,color: AppColors.lightSurface,),
-                  ),
-                  Expanded(
-                    child: ListTile(
-                      contentPadding: EdgeInsets.only(left: 16),
-                      title: SvBoldText(
-                        text:
-                            _authProvider
-                                .getFirebaseAuthInstance
-                                .currentUser!
-                                .displayName!,
-                        size: 18,
-                        textColor: Theme.of(context).colorScheme.onSurface,
-                      ),
-                      subtitle: SvBoldText(
-                        text:
-                            _authProvider
-                                .getFirebaseAuthInstance
-                                .currentUser!
-                                .email!,
-                        size: 12,
-                        textColor: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                  ),
-                ],
+              SizedBox(height: 16),
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.15,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primaryContainer,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.person_add_alt_rounded,
+                  size: 80,
+                  color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
+                ),
               ),
+              SizedBox(height: 16),
+              SvBoldText(
+                text:
+                    context
+                        .read<AuthProvider>()
+                        .currentFirebaseUser!
+                        .displayName!,
+                size: 24,
+                textColor: Theme.of(context).colorScheme.onSurface,
+              ),
+              SvStandardText(
+                text: context.read<AuthProvider>().currentFirebaseUser!.email!,
+                size: 12,
+                textColor: Theme.of(context).colorScheme.onSurface,
+              ),
+
+              SizedBox(height: 64),
+              _buildDivider(context),
+
+              _buildListTile(
+                context,
+                Icons.people_rounded,
+                "Amici",
+                () {
+                
+                },
+                SvBoldText(
+                  text: "3",
+                  size: 18,
+                  textColor: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              _buildDivider(context),
+
+              _buildListTile(context, Icons.logout_rounded, "Esci", () {
+                context.read<AuthProvider>().signout();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                );
+              }, null),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        onPressed: () {
-          context.push('/new-friend');
-        },
-        child: Icon(Icons.person_add_alt_1_rounded,color: AppColors.lightSurface,),
+    );
+  }
+
+  Widget _buildDivider(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Divider(
+        color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
+        height: 1,
       ),
+    );
+  }
+
+  Widget _buildListTile(
+    BuildContext context,
+    IconData icon,
+    String text,
+    void Function() onTap,
+    Widget? trailing,
+  ) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 24),
+      trailing: trailing,
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        child: Icon(icon, color: AppColors.lightSurface),
+      ),
+      title: SvBoldText(
+        text: text,
+        size: 16,
+        textColor: Theme.of(context).colorScheme.onSurface,
+      ),
+      onTap: () {
+        onTap();
+      },
     );
   }
 }

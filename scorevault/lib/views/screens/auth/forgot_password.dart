@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
@@ -133,7 +132,13 @@ _showProgressIndicator(context);
       try {
         await _authProvider.forgotPassword(_mailcontroller.text);
         Navigator.pop(context); // Chiude il loader quando la login ha successo
-        context.go('/welcome');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ForgotPassword(),
+          ),
+        );
+
          ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Email di recupro inviata"),

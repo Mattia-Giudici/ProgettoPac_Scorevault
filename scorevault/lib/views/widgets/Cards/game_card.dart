@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:scorevault/views/screens/generic_games/game_screen.dart';
 
 class GameCardWidget extends StatelessWidget {
   final String gameName;
@@ -41,7 +41,10 @@ class GameCardWidget extends StatelessWidget {
       },
       onTap: () {
         // TODO Navigazione alla pagina del gioco 
-        context.go('/game/$gameName');
+         Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => GameScreen(gameName: gameName,)),
+        );
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16), 

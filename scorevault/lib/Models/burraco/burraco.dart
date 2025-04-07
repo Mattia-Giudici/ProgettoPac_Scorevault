@@ -1,10 +1,10 @@
 import 'package:scorevault/Models/burraco/burraco_mano.dart';
-import 'package:scorevault/Models/giocatore.dart';
+import 'package:scorevault/Models/model_user.dart';
 //TODO bozza 
 class Burraco {
   final String id;
   final DateTime data;
-  final List<Giocatore> giocatori;
+  final List<ModelUser> giocatori;
   final String modalita; // "finale" o "dettagliata"
   final Map<String, int>? punteggiFinali;
   final List<ManoBurraco>? dettagliMani;
@@ -23,7 +23,7 @@ class Burraco {
       id: json['id'],
       data: DateTime.parse(json['data']),
       giocatori: (json['giocatori'] as List)
-          .map((g) => Giocatore.fromJson(g))
+          .map((g) => ModelUser.fromJson(g))
           .toList(),
       modalita: json['modalita'],
       punteggiFinali: json['punteggi_finali'] != null

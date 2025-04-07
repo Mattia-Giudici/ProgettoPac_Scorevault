@@ -4,6 +4,7 @@ import 'package:scorevault/views/widgets/cards/game_card.dart';
 //TODO giochi preferiti 
 
 class TabGames extends StatefulWidget {
+  TabGames({super.key});
   @override
   _TabGamesState createState() => _TabGamesState();
 }
@@ -32,6 +33,7 @@ class _TabGamesState extends State<TabGames> {
           .toList();
     });
   }
+
 
   @override
   Widget build(BuildContext context) {

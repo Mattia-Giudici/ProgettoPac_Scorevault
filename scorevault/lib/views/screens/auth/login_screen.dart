@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
+import 'package:scorevault/views/screens/auth/forgot_password.dart';
+import 'package:scorevault/views/screens/auth/signup_screen.dart';
+import 'package:scorevault/views/screens/auth/welcome_screen.dart';
+import 'package:scorevault/views/screens/homepage/homepag_screen.dart';
 import 'package:scorevault/views/widgets/buttons/sv_standard_button.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
 import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
@@ -43,11 +46,14 @@ class _LoginScreenState extends State<LoginScreen> {
         title: SvBoldText(
           text: "Login",
           size: 24,
-          textColor: Theme.of(context).colorScheme.onSurface,
+          textColor: AppColors.lightSurface,
         ),
-        leading: IconButton(onPressed: (){
-          context.go('/welcome');
-        }, icon: Icon(Icons.arrow_back_ios_new_rounded)),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios_new_rounded),
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -168,7 +174,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          context.push('/forgot-password');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ForgotPassword(),
+                            ),
+                          );
                         },
                         child: SvBoldText(
                           text: "Password dimenticata?",
@@ -197,7 +208,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     SvStandardButton(
                       text: "Crea un account",
                       function: () {
-                        context.push('/signup');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignupScreen(),
+                          ),
+                        );
                       },
                       color: Theme.of(context).colorScheme.primaryContainer,
                       textColor: Theme.of(context).colorScheme.primary,
@@ -229,7 +245,10 @@ class _LoginScreenState extends State<LoginScreen> {
           _passwordcontroller.text,
         );
         Navigator.pop(context); // Chiude il loader quando la login ha successo
-        context.go('/home');
+         Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePageScreen()),
+        );
       } catch (e) {
         Navigator.pop(context); // Chiude il loader prima di mostrare l'errore
         FocusScope.of(context).unfocus(); // Rimuove il focus dai campi di input
