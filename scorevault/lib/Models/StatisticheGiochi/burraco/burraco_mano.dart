@@ -1,4 +1,4 @@
-import 'package:scorevault/Models/burraco/burraco_score.dart';
+import 'package:scorevault/Models/StatisticheGiochi/burraco/burraco_score.dart';
 //TODO bozza 
 class ManoBurraco {
   final int numero;

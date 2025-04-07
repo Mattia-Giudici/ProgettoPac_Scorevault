@@ -1,4 +1,4 @@
-import 'package:scorevault/Models/burraco/burraco_mano.dart';
+import 'package:scorevault/Models/StatisticheGiochi/burraco/burraco_mano.dart';
 import 'package:scorevault/Models/model_user.dart';
 //TODO bozza 
 class Burraco {

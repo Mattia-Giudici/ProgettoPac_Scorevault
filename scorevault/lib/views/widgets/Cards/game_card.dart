@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:scorevault/models/game_info.dart';
 import 'package:scorevault/views/screens/generic_games/game_screen.dart';
 
 class GameCardWidget extends StatelessWidget {
-  final String gameName;
-  final String imageName;
+  final GameInfo game;
   final int elo;
   final int matchesPlayed;
   final int matchesWon;
 
   const GameCardWidget({
     super.key,
-    required this.gameName,
-    required this.imageName,
+    required this.game,
     required this.elo,
     required this.matchesPlayed,
     required this.matchesWon,
@@ -21,13 +20,11 @@ class GameCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onLongPress: () {
-        //TODO questo è temporaneo, volevo solo metterlo per ricordami l'idea, non voglio mettere il pop-up ma vorrei che le scritte 
-        //apparissero sopra l'immagine del gioco
         showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text(gameName),
+              title: Text(game.nome),
               content: Text("Partite giocate: $matchesPlayed\nVittorie: $matchesWon"),
               actions: [
                 TextButton(
@@ -40,23 +37,24 @@ class GameCardWidget extends StatelessWidget {
         );
       },
       onTap: () {
-        // TODO Navigazione alla pagina del gioco 
-         Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => GameScreen(gameName: gameName,)),
+          MaterialPageRoute(builder: (context) => GameScreen(gameName: game.nome)),
         );
       },
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16), 
+        borderRadius: BorderRadius.circular(16),
         child: Stack(
           children: [
+            // IMMAGINE DEL GIOCO
             Positioned.fill(
               child: Image.asset(
-                imageName,
+                game.immagine,
                 fit: BoxFit.cover,
               ),
             ),
 
+            // GRADIENTE SUPERIORE PER TESTO
             Positioned.fill(
               child: Container(
                 decoration: const BoxDecoration(
@@ -64,15 +62,16 @@ class GameCardWidget extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.center,
                     colors: [
-                      Colors.white70, 
-                      Colors.white10, 
+                      Colors.white70,
+                      Colors.white10,
                       Colors.transparent,
                     ],
                   ),
                 ),
               ),
             ),
-            // TESTO NOME GIOCO
+
+            // NOME DEL GIOCO
             Positioned(
               top: 10,
               left: 10,
@@ -80,7 +79,7 @@ class GameCardWidget extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: Text(
-                  gameName,
+                  game.nome,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
@@ -90,20 +89,22 @@ class GameCardWidget extends StatelessWidget {
                 ),
               ),
             ),
+
+            // ELO (in basso centrato)
             Positioned(
               bottom: 10,
               left: 10,
               child: Container(
-              padding: const EdgeInsets.symmetric(horizontal:55, vertical: 5),
-              child: Text(
-                "ELO: $elo",
-                textAlign: TextAlign.center,
-                style: const TextStyle( 
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.symmetric(horizontal: 55, vertical: 5),
+                child: Text(
+                  "ELO: $elo",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-               ),
               ),
             ),
           ],

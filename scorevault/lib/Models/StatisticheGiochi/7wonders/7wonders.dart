@@ -1,4 +1,4 @@
-import 'package:scorevault/Models/7wonders/7wonders_score.dart';
+import 'package:scorevault/Models/StatisticheGiochi/7wonders/7wonders_score.dart';
 import 'package:scorevault/Models/model_user.dart';
 
 class SevenWonders{
