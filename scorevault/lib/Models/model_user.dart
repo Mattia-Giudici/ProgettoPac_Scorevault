@@ -11,6 +11,7 @@ class ModelUser {
   String username;
   List<String> friendsList;
   List<String> pendingFriendsList;
+  String? profileImageUrl;
 
   ModelUser({
     required this.uid,
@@ -18,6 +19,7 @@ class ModelUser {
     required this.friendsList,
     required this.pendingFriendsList,
     required this.username,
+    required this.profileImageUrl,
   });
 
   String get getUid => uid;
@@ -25,6 +27,7 @@ class ModelUser {
   String get getUsername => username;
   List<String> get getFriendsList => friendsList;
   List<String> get getPendingFriendsList => pendingFriendsList;
+  String? get getProfileImageUrl => profileImageUrl;
 
   void setUid(String newUid) {
     uid = newUid;
@@ -45,6 +48,10 @@ class ModelUser {
 
   void  setPendingFriendsList(List<String> newPendingFriendsList) {
     pendingFriendsList = newPendingFriendsList;
+  }
+
+  void  setProfileImageUrl(String newProfileImageUrl) {
+    profileImageUrl = newProfileImageUrl;
   }
 
  /// Connect the generated [_$PersonFromJson] function to the `fromJson`

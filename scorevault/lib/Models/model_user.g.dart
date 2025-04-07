@@ -16,6 +16,7 @@ ModelUser _$ModelUserFromJson(Map<String, dynamic> json) => ModelUser(
           .map((e) => e as String)
           .toList(),
   username: json['username'] as String,
+  profileImageUrl: json['profileImageUrl'] as String?,
 );
 
 Map<String, dynamic> _$ModelUserToJson(ModelUser instance) => <String, dynamic>{
@@ -24,4 +25,5 @@ Map<String, dynamic> _$ModelUserToJson(ModelUser instance) => <String, dynamic>{
   'username': instance.username,
   'friendsList': instance.friendsList,
   'pendingFriendsList': instance.pendingFriendsList,
+  'profileImageUrl': instance.profileImageUrl,
 };
