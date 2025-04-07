@@ -3,38 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:scorevault/Models/model_user.dart';
 import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
-import 'package:scorevault/views/widgets/listtiles/sv_friendrequest_listtile.dart';
+import 'package:scorevault/views/widgets/listtiles/sv_friendnotification_listtile.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
 
-class NotificationNewfriendScreen extends StatefulWidget {
+class NotificationNewfriendScreen extends StatelessWidget {
   const NotificationNewfriendScreen({super.key});
-
-  @override
-  State<NotificationNewfriendScreen> createState() =>
-      _NotificationNewfriendScreenState();
-}
-
-class _NotificationNewfriendScreenState
-    extends State<NotificationNewfriendScreen> {
-  late List<ModelUser> _fetchedFriendsRequestsUsersList = List.empty(
-    growable: true,
-  );
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchFriendsRequestsUsersList();
-  }
-
-  Future<void> fetchFriendsRequestsUsersList() async {
-    setState(() => _isLoading = true);
-    final friends = await context.read<AuthProvider>().getFriendsRequests();
-    setState(() {
-      _fetchedFriendsRequestsUsersList = friends;
-      _isLoading = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,39 +28,58 @@ class _NotificationNewfriendScreenState
           },
           icon: Icon(Icons.arrow_back_ios_new_rounded),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              fetchFriendsRequestsUsersList();
-            },
-            icon: Icon(Icons.refresh_rounded),
-          ),
-        ],
+       
       ),
 
       body:
-          _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : _fetchedFriendsRequestsUsersList.isEmpty
-              ? Center(
-                child: SvBoldText(
-                  text: "Nessuna richiesta di amicizia",
-                  size: 16,
-                  textColor: Theme.of(context).colorScheme.onSurface,
+          StreamBuilder<List<ModelUser>>(
+            stream: context.read<AuthProvider>().getFriendsRequests(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.data!.isEmpty) {
+                return Center(
+                  child: SvBoldText(
+                    text: "Nessuna richiesta di amicizia",
+                    size: 16,
+                    textColor: Theme.of(context).colorScheme.onSurface,
+                  ),
+                );
+              }
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await context.read<AuthProvider>().getFriendsRequests();
+                },
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: SvBoldText(text: "Richieste di amicizia", size: 16, textColor: Theme.of(context).colorScheme.onSurface),
+                      trailing: SvBoldText(text: snapshot.data!.length.toString(), size: 16, textColor: Theme.of(context).colorScheme.onSurface),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16, bottom:8),
+                      child: Divider(
+                        color: Theme.of(context).colorScheme.onSurface.withAlpha(50),
+                        height: 1,
+                      ),
+                    ),
+                    
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) { 
+                          return SvFriendnotificationListtile(
+                            user: snapshot.data![index],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              )
-              : RefreshIndicator(
-                onRefresh: fetchFriendsRequestsUsersList,
-                child: ListView.builder(
-                  itemCount: _fetchedFriendsRequestsUsersList.length,
-                  padding: EdgeInsets.only(top: 16),
-                  itemBuilder: (context, index) {
-                    return SvFriendrequestListtile(
-                      user: _fetchedFriendsRequestsUsersList[index],
-                    );
-                  },
-                ),
-              ),
+              );
+            }
+          ),
     );
   }
 }

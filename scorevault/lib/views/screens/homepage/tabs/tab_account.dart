@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scorevault/Models/model_user.dart';
 import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/viewmodels/providers/auth_provider.dart';
 import 'package:scorevault/views/screens/auth/welcome_screen.dart';
+import 'package:scorevault/views/screens/friends/friendlist_screen.dart';
 import 'package:scorevault/views/screens/friends/notification_newfriend_screen.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
 import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
@@ -30,11 +32,30 @@ class TabAccount extends StatelessWidget {
         ),
         actionsPadding: EdgeInsets.only(right: 8),
         actions: [
-          IconButton.filled(
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => NotificationNewfriendScreen()));
+          StreamBuilder<ModelUser>(
+            stream: context.read<AuthProvider>().fetchUserData(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return IconButton.filled(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotificationNewfriendScreen(),
+                      ),
+                    );
+                  },
+                  icon: Badge(
+                    smallSize: 12,
+                    alignment: Alignment.topRight,
+                    isLabelVisible:
+                        snapshot.data!.pendingFriendsList.isNotEmpty,
+                    child: Icon(Icons.notifications_rounded),
+                  ),
+                );
+              }
+              return Container();
             },
-            icon: Icon(Icons.notifications_rounded),
           ),
         ],
       ),
@@ -61,9 +82,8 @@ class TabAccount extends StatelessWidget {
               SizedBox(height: 16),
               SvBoldText(
                 text:
-                    context
-                        .read<AuthProvider>()
-                        .currentUser!.displayName! ?? "",
+                    context.read<AuthProvider>().currentUser!.displayName! ??
+                    "",
                 size: 24,
                 textColor: Theme.of(context).colorScheme.onSurface,
               ),
@@ -97,17 +117,33 @@ class TabAccount extends StatelessWidget {
               ),
               // amici
               _buildDivider(context),
-              _buildListTile(
-                context,
-                Icons.people_rounded,
-                "Amici",
-                () {},
-                SvBoldText(
-                  text: "0",
-                  size: 18,
-                  textColor: Theme.of(context).colorScheme.onSurface,
-                ),
-                Theme.of(context).colorScheme.onSurface.withAlpha(100),
+              StreamBuilder<ModelUser>(
+                stream: context.read<AuthProvider>().fetchUserData(),
+
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _buildListTile(
+                      context,
+                      Icons.people_rounded,
+                      "Amici",
+                      () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FriendlistScreen(),
+                          ),
+                        );
+                      },
+                      SvBoldText(
+                        text: snapshot.data!.friendsList.length.toString(),
+                        size: 18,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                    );
+                  }
+                  return Container();
+                },
               ),
 
               // logout
