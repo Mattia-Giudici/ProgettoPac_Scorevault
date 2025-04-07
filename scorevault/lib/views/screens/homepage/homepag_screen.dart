@@ -22,7 +22,6 @@ class _HomepagScreenState extends State<HomePageScreen> {
     return Scaffold(
       body:Column(
         children: [
-          // const HeaderWidget(),
           Expanded(
             child: _listaTabs[_selectedIndex],
           ),

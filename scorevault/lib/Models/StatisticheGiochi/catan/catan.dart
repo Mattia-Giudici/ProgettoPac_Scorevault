@@ -1,4 +1,4 @@
-import 'package:scorevault/Models/catan/catan_score.dart';
+import 'package:scorevault/Models/StatisticheGiochi/catan/catan_score.dart';
 import 'package:scorevault/Models/model_user.dart';
 
 class Catan {
