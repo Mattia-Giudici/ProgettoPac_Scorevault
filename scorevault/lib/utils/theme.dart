@@ -10,6 +10,7 @@ class AppTheme {
       surface: AppColors.lightSurface,
       primary: AppColors.lightPrimary,
       primaryContainer: AppColors.lightGrey,
+      secondary: AppColors.lightPrimary
 
     ),
   );
@@ -20,6 +21,7 @@ class AppTheme {
       surface: AppColors.darkSurface,
       primary: AppColors.darkPrimary,
       primaryContainer: AppColors.darkGrey,
+      secondary: AppColors.lightPrimary
     ),
     // Aggiungi altre personalizzazioni per dark mode
   );

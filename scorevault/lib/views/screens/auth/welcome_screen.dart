@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:scorevault/utils/colors.dart';
 import 'package:scorevault/views/screens/auth/login_screen.dart';
 import 'package:scorevault/views/screens/auth/signup_screen.dart';
 import 'package:scorevault/views/widgets/buttons/sv_standard_button.dart';
@@ -57,7 +58,7 @@ class WelcomeScreen extends StatelessWidget {
                   );
                 },
                 color: Theme.of(context).colorScheme.primary,
-                textColor: Theme.of(context).colorScheme.surface,
+                textColor: AppColors.lightSurface,
               ),
               SizedBox(height: 16),
               SvStandardButton(

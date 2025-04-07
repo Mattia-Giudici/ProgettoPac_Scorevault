@@ -36,15 +36,20 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void initState() {
-    _authProvider = Provider.of<AuthProvider>(context, listen: false);
     super.initState();
+    // Sposta questo nella didChangeDependencies o dopo build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _authProvider = Provider.of<AuthProvider>(context, listen: false);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // Rimuovi questa riga per permettere alla schermata di ridimensionarsi quando appare la tastiera
+      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         title: SvBoldText(
           text: "Crea un account",
@@ -61,227 +66,230 @@ class _SignupScreenState extends State<SignupScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Center(
-            child: Form(
-              autovalidateMode: AutovalidateMode.disabled,
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 8,
-                        ),
-                        child: SvBoldText(
-                          text: "Nome utente",
-                          size: 16,
-                          textColor: Theme.of(context).colorScheme.onSurface,
-                        ),
+          child: Form(
+            autovalidateMode: AutovalidateMode.disabled,
+            key: _formKey,
+            child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Aggiungi spazio in cima per rendere il form più al centro quando non è visibile la tastiera
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 8,
+                      ),
+                      child: SvBoldText(
+                        text: "Nome utente",
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    TextFormField(
-                      autofocus: false,
-                      controller: _usernamecontroller,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding: EdgeInsets.all(24),
-                        labelStyle: SvStandardText.getTextStyle(
-                          size: 16,
-                          textColor: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        filled: true,
-                        fillColor:
-                            Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  TextFormField(
+                    autofocus: false,
+                    controller: _usernamecontroller,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Inserisci nome utente';
-                        }
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: EdgeInsets.all(24),
+                      labelStyle: SvStandardText.getTextStyle(
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Inserisci nome utente';
+                      }
 
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 8,
-                        ),
-                        child: SvBoldText(
-                          text: "Email",
-                          size: 16,
-                          textColor: Theme.of(context).colorScheme.onSurface,
-                        ),
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 8,
+                      ),
+                      child: SvBoldText(
+                        text: "Email",
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    TextFormField(
-                      autofocus: false,
-                      controller: _mailcontroller,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding: EdgeInsets.all(24),
-                        labelStyle: SvStandardText.getTextStyle(
-                          size: 16,
-                          textColor: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        filled: true,
-                        fillColor:
-                            Theme.of(context).colorScheme.primaryContainer,
+                  ),
+                  TextFormField(
+                    autofocus: false,
+                    controller: _mailcontroller,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Inserisci la tua email';
-                        }
-                        if (!value.contains('@') || !value.contains('.')) {
-                          return 'Email non valida';
-                        }
-                        return null;
-                      },
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: EdgeInsets.all(24),
+                      labelStyle: SvStandardText.getTextStyle(
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    const SizedBox(height: 8),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SvBoldText(
-                          text: "Password e conferma",
-                          size: 16,
-                          textColor: Theme.of(context).colorScheme.onSurface,
-                        ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Inserisci la tua email';
+                      }
+                      if (!value.contains('@') || !value.contains('.')) {
+                        return 'Email non valida';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvBoldText(
+                        text: "Password e conferma",
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
                       ),
                     ),
-                    TextFormField(
-                      autofocus: false,
-                      controller: _passwordcontroller,
-                      keyboardType: TextInputType.text,
-                      obscureText: _passwordVisible,
-                      enableSuggestions: false,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding: EdgeInsets.all(24),
-                        labelStyle: SvStandardText.getTextStyle(
-                          size: 16,
-                          textColor: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        filled: true,
-                        fillColor:
-                            Theme.of(context).colorScheme.primaryContainer,
-                        suffixIcon: Padding(
-                          padding: const EdgeInsets.only(right: 8),
-                          child: IconButton(
-                            icon: Icon(
-                              _passwordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _passwordVisible = !_passwordVisible;
-                              });
-                            },
+                  ),
+                  TextFormField(
+                    autofocus: false,
+                    controller: _passwordcontroller,
+                    keyboardType: TextInputType.text,
+                    obscureText: _passwordVisible,
+                    enableSuggestions: false,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: EdgeInsets.all(24),
+                      labelStyle: SvStandardText.getTextStyle(
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: IconButton(
+                          icon: Icon(
+                            _passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                           ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordVisible = !_passwordVisible;
+                            });
+                          },
                         ),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Inserisci la password';
-                        }
-                        if (value.length < 6) {
-                          return 'Password non valida';
-                        }
-                        return null;
-                      },
                     ),
-                    const SizedBox(height: 8),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Inserisci la password';
+                      }
+                      if (value.length < 6) {
+                        return 'Password non valida';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 8),
 
-                    TextFormField(
-                      autofocus: false,
-                      controller: _confirmpasswordcontroller,
-                      keyboardType: TextInputType.text,
-                      obscureText: _passwordVisible,
-                      enableSuggestions: false,
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        contentPadding: EdgeInsets.all(24),
-                        labelStyle: SvStandardText.getTextStyle(
-                          size: 16,
-                          textColor: Theme.of(context).colorScheme.onSurface,
-                        ),
-                        filled: true,
-                        fillColor:
-                            Theme.of(context).colorScheme.primaryContainer,
+                  TextFormField(
+                    autofocus: false,
+                    controller: _confirmpasswordcontroller,
+                    keyboardType: TextInputType.text,
+                    obscureText: _passwordVisible,
+                    enableSuggestions: false,
+                    // Cambia da next a done per consentire la chiusura facile della tastiera
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(16),
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Conferma password';
-                        }
-                        if (value != _passwordcontroller.text) {
-                          return 'Conferma password non valida';
-                        }
-                        return null;
-                      },
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: EdgeInsets.all(24),
+                      labelStyle: SvStandardText.getTextStyle(
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    const SizedBox(height: 16),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Conferma password';
+                      }
+                      if (value != _passwordcontroller.text) {
+                        return 'Conferma password non valida';
+                      }
+                      return null;
+                    },
+                    // Aggiungi questo per consentire la chiusura facile della tastiera
+                    onEditingComplete: () {
+                      FocusScope.of(context).unfocus();
+                    },
+                  ),
+                  const SizedBox(height: 16),
 
-                    SvStandardButton(
-                      text: "Registra account",
-                      function: () {
-                        _performRegister(context);
-                      },
-                      color: Theme.of(context).colorScheme.primary,
-                      textColor: AppColors.lightSurface,
-                    ),
-                    const SizedBox(height: 16),
-                    SvStandardText(
-                      text: " - Hai già un account? - ",
-                      size: 12,
-                      textColor: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    const SizedBox(height: 16),
-                    SvStandardButton(
-                      text: "Accedi",
-                      function: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
-                        );
-                      },
-                      color: Theme.of(context).colorScheme.primaryContainer,
-                      textColor: Theme.of(context).colorScheme.primary,
-                    ),
-                  ],
-                ),
+                  SvStandardButton(
+                    text: "Registra account",
+                    function: () {
+                      _performRegister(context);
+                    },
+                    color: Theme.of(context).colorScheme.primary,
+                    textColor: AppColors.lightSurface,
+                  ),
+                  const SizedBox(height: 16),
+                  SvStandardText(
+                    text: " - Hai già un account? - ",
+                    size: 12,
+                    textColor: Theme.of(context).colorScheme.onSurface,
+                  ),
+                  const SizedBox(height: 16),
+                  SvStandardButton(
+                    text: "Accedi",
+                    function: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+                    },
+                    color: Theme.of(context).colorScheme.primaryContainer,
+                    textColor: Theme.of(context).colorScheme.primary,
+                  ),
+                  // Aggiungi spazio alla fine per garantire la scrollabilità oltre l'ultimo elemento
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                ],
               ),
             ),
           ),
@@ -299,8 +307,8 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Future<void> _performRegister(BuildContext context) async {
-    _showProgressIndicator(context);
     if (_formKey.currentState!.validate()) {
+      _showProgressIndicator(context);
       try {
         await _authProvider.signup(
           _mailcontroller.text,
@@ -323,63 +331,9 @@ class _SignupScreenState extends State<SignupScreen> {
         );
       }
     } else {
-      Navigator.pop(context); // Chiude il loader se la validazione fallisce
       FocusScope.of(
         context,
       ).unfocus(); // Rimuove il focus per evitare la tastiera
     }
   }
 }
-/*
- 
-
-*/
-
-/**
- * Exception has occurred.
-ProviderNotFoundException (Error: Could not find the correct Provider<AuthProvider> above this LoginScreen Widget
-
-This happens because you used a `BuildContext` that does not include the provider
-of your choice. There are a few common scenarios:
-
-- You added a new provider in your `main.dart` and performed a hot-reload.
-  To fix, perform a hot-restart.
-
-- The provider you are trying to read is in a different route.
-
-  Providers are "scoped". So if you insert of provider inside a route, then
-  other routes will not be able to access that provider.
-
-- You used a `BuildContext` that is an ancestor of the provider you are trying to read.
-
-  Make sure that LoginScreen is under your MultiProvider/Provider<AuthProvider>.
-  This usually happens when you are creating a provider and trying to read it immediately.
-
-  For example, instead of:
-
-  ```
-  Widget build(BuildContext context) {
-    return Provider<Example>(
-      create: (_) => Example(),
-      // Will throw a ProviderNotFoundError, because `context` is associated
-      // to the widget that is the parent of `Provider<Example>`
-      child: Text(context.watch<Example>().toString()),
-    );
-  }
-  ```
-
-  consider using `builder` like so:
-
-  ```
-  Widget build(BuildContext context) {
-    return Provider<Example>(
-      create: (_) => Example(),
-      // we use `builder` to obtain a new `BuildContext` that has access to the provider
-      builder: (context, child) {
-        // No longer throws
-        return Text(context.watch<Example>().toString());
-      }
-    );
-  }
-  ```
- */

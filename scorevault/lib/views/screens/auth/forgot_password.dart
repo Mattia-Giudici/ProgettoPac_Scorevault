@@ -34,83 +34,94 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
         centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+         leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back_ios_new_rounded),
+        ),
       ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
             key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                 SvBoldText(
-                text: "Recupera password",
-                size: 24,
-                textColor: Theme.of(context).colorScheme.onSurface,
-              ),
-              SvStandardText(
-                text:
-                    "Inserisci l'indirizzo email del tuo account, ti verrà inviato un link con cui potrai procedere con il recupero della password",
-                size: 12,
-                textColor: Theme.of(context).colorScheme.onSurface,
-              ),
-              const SizedBox(height: 48,),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 8,
-                    ),
-                    child: SvBoldText(
-                      text: "Email",
-                      size: 16,
-                      textColor: Theme.of(context).colorScheme.onSurface,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.2),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                   SvBoldText(
+                  text: "Recupera password",
+                  size: 24,
+                  textColor: Theme.of(context).colorScheme.onSurface,
+                ),
+                SvStandardText(
+                  text:
+                      "Inserisci l'indirizzo email del tuo account, ti verrà inviato un link con cui potrai procedere con il recupero della password",
+                  size: 12,
+                  textColor: Theme.of(context).colorScheme.onSurface,
+                ),
+                const SizedBox(height: 48,),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 8,
+                      ),
+                      child: SvBoldText(
+                        text: "Email",
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ),
-                ),
-                TextFormField(
-                  controller: _mailcontroller,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(16),
+                  TextFormField(
+                    controller: _mailcontroller,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      contentPadding: EdgeInsets.all(24),
+                      labelStyle: SvStandardText.getTextStyle(
+                        size: 16,
+                        textColor: Theme.of(context).colorScheme.onSurface,
+                      ),
+                      filled: true,
+                      fillColor: Theme.of(context).colorScheme.primaryContainer,
                     ),
-                    floatingLabelBehavior: FloatingLabelBehavior.never,
-                    contentPadding: EdgeInsets.all(24),
-                    labelStyle: SvStandardText.getTextStyle(
-                      size: 16,
-                      textColor: Theme.of(context).colorScheme.onSurface,
-                    ),
-                    filled: true,
-                    fillColor: Theme.of(context).colorScheme.primaryContainer,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Inserisci la tua email';
+                      }
+                      if (!value.contains('@') || !value.contains('.')) {
+                        return 'Email non valida';
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Inserisci la tua email';
-                    }
-                    if (!value.contains('@') || !value.contains('.')) {
-                      return 'Email non valida';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                SvStandardButton(
-                  text: "Invia mail di recupero",
-                  function: () {
-                    _performForgotPassword(context);
-                  },
-                  color: Theme.of(context).colorScheme.primary,
-                  textColor: AppColors.lightSurface,
-                ),
-                
-              ],
+                  const SizedBox(height: 16),
+                  SvStandardButton(
+                    text: "Invia mail di recupero",
+                    function: () {
+                      _performForgotPassword(context);
+                    },
+                    color: Theme.of(context).colorScheme.primary,
+                    textColor: AppColors.lightSurface,
+                  ),
+                  
+                ],
+              ),
             ),
           ),
         ),
