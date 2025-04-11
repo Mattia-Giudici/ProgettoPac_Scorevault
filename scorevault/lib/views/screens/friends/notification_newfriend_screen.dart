@@ -49,7 +49,7 @@ class NotificationNewfriendScreen extends StatelessWidget {
               }
               return RefreshIndicator(
                 onRefresh: () async {
-                  await context.read<AuthProvider>().getFriendsRequests();
+                  context.read<AuthProvider>().getFriendsRequests();
                 },
                 child: Column(
                   children: [

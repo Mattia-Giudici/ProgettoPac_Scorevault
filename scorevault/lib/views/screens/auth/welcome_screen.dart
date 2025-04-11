@@ -5,7 +5,6 @@ import 'package:scorevault/views/screens/auth/login_screen.dart';
 import 'package:scorevault/views/screens/auth/signup_screen.dart';
 import 'package:scorevault/views/widgets/buttons/sv_standard_button.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
-import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});

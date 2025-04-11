@@ -9,19 +9,6 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  User? _user;
-  ModelUser? _userData;
-
-  AuthProvider() {
-    _firebaseAuth.authStateChanges().listen((user) {
-      _user = user;
-      notifyListeners();
-    });
-  }
-
-  ModelUser getUserData() {
-    return _userData!;
-  }
 
   @override
   Stream<ModelUser> fetchUserData() {
@@ -32,11 +19,11 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
         .map((doc) => ModelUser.fromJson(doc.data()!));
   }
 
-  @override
-  User? get currentUser => _user;
-
+ 
   @override
   bool isLogged() => _firebaseAuth.currentUser != null;
+
+  get getCurrentUser => _firebaseAuth.currentUser!;
 
   @override
   Future<void> signin(String email, String password) async {
@@ -45,7 +32,6 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
         email: email,
         password: password,
       );
-      _user = cred.user;
       notifyListeners();
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.code, e.message);
@@ -59,7 +45,6 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
         email: email,
         password: password,
       );
-      _user = cred.user;
       notifyListeners();
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.code, e.message);
@@ -88,7 +73,6 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
           pendingFriendsList: [],
         ),
       );
-      _user = user.user;
     } catch (e) {
       await user.user?.delete();
       rethrow;
@@ -101,7 +85,6 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
       final userId = _firebaseAuth.currentUser!.uid;
       await _firestore.collection("utenti").doc(userId).delete();
       await _firebaseAuth.currentUser!.delete();
-      _userData = null;
       notifyListeners();
     } on FirebaseAuthException catch (e) {
       throw AuthException(e.code, e.message);
@@ -111,7 +94,6 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
   @override
   Future<void> signout() async {
     await _firebaseAuth.signOut();
-    _userData = null;
     notifyListeners();
   }
 
@@ -137,7 +119,6 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
             toFirestore: (model, _) => model.toJson(),
           )
           .set(updatedUser);
-      _userData = updatedUser;
       notifyListeners();
     } catch (e) {
       throw AuthException('update_failed', 'Failed to update user data');

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scorevault/viewmodels/GamesController.dart';
 import 'package:scorevault/models/game_info.dart';
-import 'package:scorevault/views/widgets/cards/game_card.dart';
+import 'package:scorevault/views/widgets/Cards/game_card.dart';
 import 'package:scorevault/views/widgets/headers/header_home.dart';
 
 class TabGames extends StatefulWidget {
@@ -18,9 +18,9 @@ class _TabGamesState extends State<TabGames> {
   List<GameInfo> _filteredGames = [];
 
   String _searchText = '';
-  List<String> _selectedCategories = [];
-  List<int> _selectedPlayerCounts = [];
-  List<int> _selectedDifficulties = [];
+  final List<String> _selectedCategories = [];
+  final List<int> _selectedPlayerCounts = [];
+  final List<int> _selectedDifficulties = [];
 
   bool _filtersExpanded = false;
   bool _isLoading = true;
@@ -195,13 +195,14 @@ class _TabGamesState extends State<TabGames> {
                           ),
                           itemBuilder: (context, index) {
                             final gioco = _filteredGames[index];
-                            return GameCardWidget(
+                            
+                            return  GameCardWidget(
                               game: gioco,
                               elo: 1500,
                               matchesPlayed: 10,
                               matchesWon: 5,
                             );
-                          },
+                          }
                         ),
                       ),
           ),

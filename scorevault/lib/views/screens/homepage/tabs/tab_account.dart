@@ -82,13 +82,13 @@ class TabAccount extends StatelessWidget {
               SizedBox(height: 16),
               SvBoldText(
                 text:
-                    context.read<AuthProvider>().currentUser!.displayName! ??
+                    context.read<AuthProvider>().getCurrentUser!.displayName! ??
                     "",
                 size: 24,
                 textColor: Theme.of(context).colorScheme.onSurface,
               ),
               SvStandardText(
-                text: context.read<AuthProvider>().currentUser!.email!,
+                text: context.read<AuthProvider>().getCurrentUser!.email!,
                 size: 12,
                 textColor: Theme.of(context).colorScheme.onSurface,
               ),
