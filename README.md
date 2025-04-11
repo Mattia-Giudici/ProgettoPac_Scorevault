@@ -103,7 +103,7 @@ Dopo la pressione del pulsante, l'applicazione reindirizza automaticamente l'ute
 #### UC1.4: Visualizza informazioni utente loggato
 
 **Descrizione**:  
-La schermata del profilo utente è accessibile toccando l'icona "Profilo" (rappresentata da una silhouette umana o l'immagine di profilo) nell'angolo destro della barra di navigazione inferiore. Questa schermata presenta un design moderno con la foto profilo dell'utente in formato circolare nella parte superiore, seguita immediatamente dal nome utente in caratteri grandi e ben visibili. Sotto queste informazioni primarie, l'utente visualizza un codice utente univoco (formato alfanumerico, ad es. "SV-2X4F7") che può essere copiato toccando un'icona di copia adiacente.
+La schermata del profilo utente è accessibile toccando l'icona "Profilo" (rappresentata da una silhouette umana o l'immagine di profilo) nell'angolo destro della barra di navigazione inferiore. Questa schermata presenta un design moderno con la foto profilo dell'utente in formato circolare nella parte superiore, seguita immediatamente dal nome utente in caratteri grandi e ben visibili. Sotto queste informazioni primarie, è presente un pulsante "Amici" seguito da un contatore dove visualizzarne rapidamente il numero.
 In basso è presente il tasto "Disconnetti"
 
 **Attori**:  
@@ -115,26 +115,20 @@ In basso è presente il tasto "Disconnetti"
 
 **Trigger**:  
 - L'utente tocca l'icona "Profilo" nella barra di navigazione inferiore
-- L'utente seleziona "Il mio profilo" dal menu a hamburger (se disponibile)
-- L'utente clicca sul proprio avatar in qualsiasi punto dell'app dove è visualizzato
 
 **Post-condizione**:  
-L'utente visualizza tutte le proprie informazioni personali in un'unica schermata scorrevole, organizzata in sezioni logiche e visivamente distinte. I dati mostrati sono aggiornati in tempo reale, quindi eventuali modifiche recenti (come nuove richieste di amicizia o risultati di partite) sono immediatamente visibili. Se l'utente ha ricevuto nuove richieste di amicizia, un badge numerato rosso appare accanto alla sezione "Amici". Se l'utente non ha ancora completato il profilo, promemoria visivi (icone con punto esclamativo o bordi tratteggiati) evidenziano le aree che richiedono attenzione, come "Aggiungi una bio" o "Carica foto profilo". Da questa schermata, l'utente può facilmente navigare verso altre funzionalità correlate toccando i relativi pulsanti, come "Modifica profilo", "Gestisci amici" o "Preferenze di privacy".
+L'utente visualizza tutte le proprie informazioni personali in un'unica schermata scorrevole, organizzata in sezioni logiche e visivamente distinte. I dati mostrati sono aggiornati in tempo reale, quindi eventuali modifiche recenti (come nuove richieste di amicizia o risultati di partite) sono immediatamente visibili. Se l'utente ha ricevuto nuove richieste di amicizia, un badge numerato rosso appare accanto alla "Campanella" nella parte superiore della appBar. 
 
 **Procedimento**:  
 1. L'utente accede alla schermata principale dell'app dopo il login.
 2. L'utente tocca l'icona "Profilo" nell'angolo destro della barra di navigazione inferiore.
-3. L'app recupera i dati del profilo utente da Firestore, mostrando temporaneamente degli skeleton loader (sagome in grigio chiaro) nelle varie sezioni durante il caricamento.
-4. L'app carica progressivamente le diverse sezioni, prima le informazioni essenziali (nome, foto) e poi le sezioni più complesse (statistiche, amici, attività).
-5. L'utente può scorrere verticalmente per visualizzare tutte le sezioni del profilo.
-6. L'utente può toccare singole sezioni per espanderle o accedere a viste più dettagliate (ad es. toccando "Vedi tutti" nella sezione amici).
-7. Per aggiornare i dati, l'utente può utilizzare il gesto di "pull-to-refresh" (tirare verso il basso la schermata).
-8. Le interazioni con i vari elementi (come il tocco su un amico) portano a schermate correlate con transizioni fluide.
+3. L'app recupera i dati del profilo utente da Firestore, attraverso uno Stream.
+4. L'app permette all'utente di navigare verso la sezione "Amici"
 
 #### UC1.5: Cerca utenti e richiesta di amicizia
 
 **Descrizione**:  
-La funzionalità di ricerca utenti è accessibile dalla schermata del profilo, presenta un campo in cui inserire un codice amico
+La funzionalità di ricerca utenti è accessibile dalla schermata del profilo, presenta una lista di tutti gli account presenti nell'applicazione, tranne il proprio e gli account che sono già 
 
 **Attori**:  
 - Utente
@@ -154,12 +148,78 @@ La richiesta mostrerà un banner con le informazioni dell'utente che ha fatto ri
 3. Si apre la schermata di ricerca con il campo di input per il codice amico
 4. L'utente digita il codice amico e preme il pulsante di invio richiesta.
 
+#### UC1.5: Aggiungi amici
+
+**Descrizione**:  
+La schermata "Aggiungi amici" è accessibile toccando il **Floating Action Button (FAB)** con icona “+” o simile, visibile in basso a destra nella schermata "Amici". Questa schermata ha un design pulito e moderno e consente all’utente di cercare altri account tramite una **barra di ricerca** situata nella parte superiore, che accetta input sia per **nome utente** che per **email**.  
+I risultati vengono mostrati come **schede utente**, ognuna delle quali presenta la **foto profilo** (in formato circolare), il **nome utente**, e un pulsante **"Invia richiesta di amicizia"**.  
+Se la richiesta è stata già inviata o l’utente è già amico, il pulsante sarà disabilitato o mostrerà uno stato alternativo (es. "Richiesta inviata").
+
+**Attori**:  
+- Utente  
+- Firebase Auth  
+- Firebase Firestore  
+
+**Trigger**:  
+- L'utente tocca il FAB "+" nella schermata "Amici"
+
+**Post-condizione**:  
+L’utente può inviare richieste di amicizia ad altri utenti. Le richieste inviate vengono salvate su Firestore e riflettono immediatamente lo stato aggiornato grazie a meccanismi in tempo reale (Stream). La UI mostra visivamente lo stato della richiesta per ogni utente.
+
+**Procedimento**:  
+1. L’utente si trova nella schermata "Amici".  
+2. Tocca il FAB posizionato in basso a destra per accedere alla schermata "Aggiungi amici".  
+3. L’app mostra una barra di ricerca in alto.  
+4. L’utente inserisce un nome utente o un’email nella barra di ricerca.  
+5. L’app effettua una query in tempo reale a Firestore per trovare corrispondenze.  
+6. I risultati vengono mostrati come schede ordinate verticalmente.  
+7. Ogni scheda ha un pulsante "Invia richiesta di amicizia".  
+8. Quando l’utente preme il pulsante, l’app registra la richiesta su Firestore.  
+9. Il pulsante cambia stato per indicare che la richiesta è stata inviata.
+
+Perfetto! Ecco il caso d’uso per la schermata **"Notifiche richieste di amicizia"**, mantenendo lo stesso stile coerente:
+
+---
+
+#### UC1.6: Notifiche richieste di amicizia
+
+**Descrizione**:  
+La schermata "Notifiche" è accessibile dalla schermata "Profilo utente", toccando l'icona **"Campanella"** posizionata nella parte superiore destra della appBar. Se l’utente ha ricevuto una o più richieste di amicizia non ancora gestite, sulla campanella appare un **badge rosso** con il numero di notifiche pendenti.  
+Toccando l’icona, l’utente viene reindirizzato alla schermata "Notifiche", dove viene mostrato un elenco verticale di **schede utente**, ciascuna contenente la **foto profilo**, il **nome utente** del richiedente e due pulsanti di azione: **"Accetta"** (verde) e **"Rifiuta"** (rosso).
+
+**Attori**:  
+- Utente  
+- Firebase Auth  
+- Firebase Firestore  
+
+**Trigger**:  
+- L’utente tocca l’icona "Campanella" nella schermata "Profilo utente"
+
+**Post-condizione**:  
+L’utente può accettare o rifiutare richieste di amicizia. L’azione viene salvata in Firestore e la lista notifiche si aggiorna in tempo reale. Il badge scompare automaticamente se non ci sono più richieste pendenti.
+
+**Procedimento**:  
+1. L’utente si trova nella schermata "Profilo utente".  
+2. Visualizza un’icona "Campanella" nella appBar.  
+3. Se sono presenti richieste di amicizia in attesa, l’icona mostra un badge rosso con il numero di notifiche.  
+4. L’utente tocca l’icona per accedere alla schermata "Notifiche".  
+5. L’app recupera da Firestore l’elenco delle richieste di amicizia ricevute.  
+6. Ogni richiesta è rappresentata in una scheda utente con:  
+   - Foto profilo (circolare)  
+   - Nome utente  
+   - Pulsante **"Accetta"** (verde)  
+   - Pulsante **"Rifiuta"** (rosso)  
+7. L’utente può:  
+   - Toccare **"Accetta"** per aggiungere il richiedente alla lista amici (modifica su Firestore)  
+   - Toccare **"Rifiuta"** per ignorare la richiesta (rimozione/aggiornamento su Firestore)  
+8. L’interfaccia si aggiorna in tempo reale: la richiesta scompare dalla lista una volta gestita.
+
 ### UC2: Gestione giochi (astratto)
 
 #### UC2.1: Visualizza libreria giochi
 
 **Descrizione**:  
-La libreria giochi è accessibile toccando l'icona "Giochi" (rappresentata da un dado o controller di gioco stilizzato) nella barra di navigazione inferiore. Questa schermata presenta una ricca interfaccia visiva con un carosello orizzontale nella parte superiore che mostra i giochi più popolari o recentemente aggiunti, con copertine colorate e accattivanti. Sotto il carosello, l'utente trova una barra di ricerca con l'indicazione "Cerca tra 500+ giochi" e icone di filtro. Il corpo principale della schermata presenta una griglia di card dei giochi, ciascuna con l'immagine di copertina, il titolo del gioco e una piccola icona che indica la categoria (strategia, carte, dadi, ecc.). I giochi preferiti dall'utente sono evidenziati con un simbolo di stella dorata nell'angolo della card. In alto a destra, un menu a tendina consente di ordinare i giochi per vari criteri: Popolari, Recenti, Alfabetici, o Per categoria. La schermata supporta lo scorrimento infinito, caricando dinamicamente più giochi mentre l'utente scorre verso il basso.
+La libreria giochi è accessibile toccando l'icona "Giochi" (rappresentata da un dado o controller di gioco stilizzato) nella barra di navigazione inferiore. Questa schermata presenta una ricca interfaccia visiva con una gridList nella parte superiore, che mostra i giochi con copertine colorate e accattivanti. Sopra il carosello, l'utente trova una barra di ricerca con l'indicazione "Cerca tra i giochi" e icone di filtro. I giochi sono rappresentati da una card, ciascuna con l'immagine di copertina, il titolo del gioco e una piccola icona che indica la categoria (strategia, carte, dadi, ecc.). I giochi preferiti dall'utente sono evidenziati con un simbolo di stella dorata/cuore nell'angolo della card. In alto a destra, un menu a tendina consente di ordinare i giochi per vari criteri: Popolari, Recenti, Alfabetici, o Per categoria. La schermata supporta lo scorrimento infinito, caricando dinamicamente più giochi mentre l'utente scorre verso il basso.
 
 **Attori**:  
 - Utente autenticato
@@ -168,10 +228,8 @@ La libreria giochi è accessibile toccando l'icona "Giochi" (rappresentata da un
 
 **Trigger**:  
 - L'utente tocca l'icona "Giochi" nella barra di navigazione inferiore
-- L'utente seleziona "Scopri nuovi giochi" dalla schermata Home
 - L'utente viene reindirizzato alla libreria dopo una ricerca generale nell'app
-- L'utente seleziona "Aggiungi partita" e deve prima selezionare un gioco
-
+- 
 **Post-condizione**:  
 L'utente visualizza un'ampia selezione di giochi disponibili nel sistema, organizzati in modo intuitivo e visivamente accattivante. I giochi che l'utente ha già giocato o aggiunto ai preferiti sono chiaramente identificabili grazie a indicatori visivi (stella per i preferiti, badge con numero di partite giocate). Se l'utente ha applicato filtri o effettuato ricerche, la libreria mostra solo i giochi corrispondenti ai criteri selezionati, con un'indicazione chiara dei filtri attivi nella parte superiore (ad es. "Mostrando: Giochi di strategia per 2-4 giocatori"). Se non ci sono risultati per una ricerca, appare un messaggio amichevole "Nessun gioco trovato" con suggerimenti alternativi. L'utente può facilmente aggiungere giochi ai preferiti toccando l'icona a forma di cuore su qualsiasi card, che cambia da contorno a pieno con una breve animazione di feedback.
 
@@ -190,7 +248,7 @@ L'utente visualizza un'ampia selezione di giochi disponibili nel sistema, organi
 #### UC2.2: Visualizza dettaglio di un gioco
 
 **Descrizione**:  
-La schermata di dettaglio di un gioco si apre quando l'utente tocca una card di gioco dalla libreria o dai risultati di ricerca. Questa schermata presenta un design immersivo con un'immagine di copertina del gioco a tutto schermo nella parte superiore, che sfuma gradualmente verso il contenuto sottostante. Il titolo del gioco appare in caratteri grandi e ben leggibili sopra l'immagine, con un'ombreggiatura che garantisce la leggibilità su qualsiasi sfondo. Sotto l'immagine di copertina, una sezione di "Informazioni rapide" mostra icone e testo per numero di giocatori (es. "2-5"), tempo di gioco (es. "30-45 min"), complessità (es. "★★☆☆☆") e età consigliata (es. "10+"). Scorrendo verso il basso, l'utente trova una descrizione dettagliata del gioco, seguita da sezioni per regole semplificate, galleria di immagini, recensioni della community e "Statistiche personali" che mostrano quante volte l'utente ha giocato, la sua percentuale di vittorie e i punteggi medi. Nella parte inferiore della schermata, un grande pulsante blu "Registra partita" invita all'azione principale.
+La schermata di dettaglio di un gioco si apre quando l'utente tocca una card di gioco dalla libreria o dai risultati di ricerca. Questa schermata presenta un design immersivo con un'immagine di copertina del gioco a tutto schermo nella parte superiore, che sfuma gradualmente verso il contenuto sottostante. Il titolo del gioco appare in caratteri grandi e ben leggibili sopra l'immagine, con un'ombreggiatura che garantisce la leggibilità su qualsiasi sfondo. Sotto l'immagine di copertina, una sezione di "Informazioni rapide" mostra icone e testo per numero di giocatori (es. "2-5"), tempo di gioco (es. "30-45 min"), complessità (es. "★★☆☆☆") e età consigliata (es. "10+"). Scorrendo verso il basso, l'utente trova una descrizione dettagliata del gioco, seguita da sezioni per regole semplificate, sotto la descrizione vediamo i pulsanti di "Statistiche personali" che mostrano quante volte l'utente ha giocato, la sua percentuale di vittorie e i punteggi medi. Nella parte inferiore della schermata, un pulsante "Registra partita" invita all'azione principale.
 
 **Attori**:  
 - Utente autenticato
@@ -209,11 +267,8 @@ L'utente visualizza tutte le informazioni dettagliate relative al gioco selezion
 **Procedimento**:  
 1. L'utente tocca la card di un gioco nella libreria o nei risultati di ricerca.
 2. L'app carica la schermata di dettaglio con una transizione fluida, mostrando inizialmente l'immagine di copertina e il titolo.
-3. Mentre i dati completi vengono caricati da Firestore, skeleton loader possono apparire nelle sezioni inferiori.
 4. L'app recupera i dati generali del gioco (descrizione, regole, immagini) e contemporaneamente le statistiche personali dell'utente relative a quel gioco.
 5. L'utente può scorrere verticalmente per esplorare tutte le sezioni della schermata.
-6. Toccando le miniature nella galleria di immagini, l'utente può aprire un visualizzatore a schermo intero per vedere meglio le immagini.
-7. L'utente può leggere le recensioni di altri giocatori e, se lo desidera, aggiungere la propria.
 8. Per registrare una nuova partita di questo gioco, l'utente può toccare il pulsante "Registra partita" nella parte inferiore.
 9. Per tornare alla libreria, l'utente tocca il pulsante "Indietro" nell'angolo superiore sinistro.
 10. Per aggiungere il gioco ai preferiti, l'utente tocca l'icona a forma di cuore, che cambia stato con un'animazione.
