@@ -9,6 +9,7 @@ class GameInfo {
   final int difficulty; // Valore da 0 a 5 (rappresentato con stelle)
   final List<String> categorie;
   final List<String> modalita; // es. singolo, squadra
+  final int eta; //il valore è numerico ma si riferisce sempre da quell'eta in poi es: 10+
 
   GameInfo({
     required this.id,
@@ -21,6 +22,7 @@ class GameInfo {
     required this.difficulty,
     required this.categorie,
     required this.modalita,
+    required this.eta,
   });
 
   factory GameInfo.fromJson(Map<String, dynamic> json) {
@@ -35,9 +37,11 @@ class GameInfo {
       difficulty: json['difficulty'],
       categorie: List<String>.from(json['categorie']),
       modalita: List<String>.from(json['modalita']),
+      eta: json['eta'] ?? 3, //valore di default se non presente
     );
   }
 
+//TODO potrebbe essere rimosso credo, inutile ad ora
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -50,6 +54,7 @@ class GameInfo {
       'difficulty': difficulty,
       'categorie': categorie,
       'modalita': modalita,
+      'eta': eta,
     };
   }
 }
