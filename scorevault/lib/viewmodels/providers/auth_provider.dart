@@ -23,7 +23,9 @@ class AuthProvider extends ChangeNotifier implements AuthServices {
   @override
   bool isLogged() => _firebaseAuth.currentUser != null;
 
-  get getCurrentUser => _firebaseAuth.currentUser!;
+ FirebaseAuth getCurrentUser (){
+  return _firebaseAuth;
+ }
 
   @override
   Future<void> signin(String email, String password) async {

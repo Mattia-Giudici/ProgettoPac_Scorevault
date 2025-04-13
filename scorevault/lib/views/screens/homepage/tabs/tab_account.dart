@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:scorevault/Models/model_user.dart';
 import 'package:scorevault/utils/colors.dart';
@@ -6,6 +9,7 @@ import 'package:scorevault/viewmodels/providers/auth_provider.dart';
 import 'package:scorevault/views/screens/auth/welcome_screen.dart';
 import 'package:scorevault/views/screens/friends/friendlist_screen.dart';
 import 'package:scorevault/views/screens/friends/notification_newfriend_screen.dart';
+import 'package:scorevault/views/widgets/buttons/sv_iconprofile_button.dart';
 import 'package:scorevault/views/widgets/texts/sv_bold_text.dart';
 import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
 
@@ -17,7 +21,9 @@ import 'package:scorevault/views/widgets/texts/sv_standard_text.dart';
                 );
  */
 class TabAccount extends StatelessWidget {
-  const TabAccount({super.key});
+  TabAccount({super.key});
+
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -66,29 +72,45 @@ class TabAccount extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 16),
-              Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.15,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.person_add_alt_rounded,
-                  size: 80,
-                  color: Theme.of(context).colorScheme.onSurface.withAlpha(150),
-                ),
+              StreamBuilder(
+                stream: context.read<AuthProvider>().fetchUserData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState != ConnectionState.waiting) {
+                    if (snapshot.hasData) {
+                      return SvIconprofileButton(
+                        radius: 60,
+                        enableImagePicker: true, 
+                        imageUrl: snapshot.data!.getProfileImageUrl!);
+                    }
+                  }
+                  return Icon(
+                    Icons.person_add_alt_rounded,
+                    size: 80,
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withAlpha(150),
+                  );
+                },
               ),
               SizedBox(height: 16),
               SvBoldText(
                 text:
-                    context.read<AuthProvider>().getCurrentUser!.displayName! ??
+                    context
+                        .read<AuthProvider>()
+                        .getCurrentUser()
+                        .currentUser!
+                        .displayName ??
                     "",
                 size: 24,
                 textColor: Theme.of(context).colorScheme.onSurface,
               ),
               SvStandardText(
-                text: context.read<AuthProvider>().getCurrentUser!.email!,
+                text:
+                    context
+                        .read<AuthProvider>()
+                        .getCurrentUser()
+                        .currentUser!
+                        .email!,
                 size: 12,
                 textColor: Theme.of(context).colorScheme.onSurface,
               ),
@@ -203,5 +225,25 @@ class TabAccount extends StatelessWidget {
         onTap();
       },
     );
+  }
+
+  // Metodo per aprire la galleria
+  Future<void> pickImage() async {
+    try {
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1800,
+        maxHeight: 1800,
+        imageQuality: 90,
+      );
+
+      if (image != null) {
+        // Usa l'immagine selezionata
+        Uint8List imageBytes = await image.readAsBytes();
+        // ... fai qualcosa con imageBytes
+      }
+    } catch (e) {
+      print("Errore nella selezione dell'immagine: $e");
+    }
   }
 }
