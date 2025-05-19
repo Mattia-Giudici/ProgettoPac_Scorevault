@@ -42,17 +42,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyDtpJk05yZI_A2ftnH7VBpZzlspCxillHo',
-    appId: '1:721878295946:web:c5c9782383d960a14dd473',
+    appId: '1:721878295946:web:3e5032408d6984344dd473',
     messagingSenderId: '721878295946',
     projectId: 'scorevault-199e9',
     authDomain: 'scorevault-199e9.firebaseapp.com',
     storageBucket: 'scorevault-199e9.firebasestorage.app',
-    measurementId: 'G-EJ3PECXYRT',
+    measurementId: 'G-5FCLGTD22T',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBCpuGZqdnUSI0_x9PW8YVRJkj5P10R4K8',
-    appId: '1:721878295946:android:855de1fb7960f1f54dd473',
+    appId: '1:721878295946:android:8cd4bc3eba54ac804dd473',
     messagingSenderId: '721878295946',
     projectId: 'scorevault-199e9',
     storageBucket: 'scorevault-199e9.firebasestorage.app',
